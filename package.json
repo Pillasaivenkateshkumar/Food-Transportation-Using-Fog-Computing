@@ -1,0 +1,29 @@
+{
+  "name": "edgeguard-cold-chain-fog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EdgeGuard: Intelligent cold chain monitoring and predictive analytics for vaccine and food transportation using fog computing.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node services/backend/server.mjs",
+    "backend": "node services/backend/server.mjs",
+    "fog": "node services/fog-node/server.mjs",
+    "sensors": "node services/sensor-simulator/index.mjs",
+    "dev": "node scripts/dev.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "test": "node --test"
+  },
+  "keywords": [
+    "fog-computing",
+    "edge-computing",
+    "cold-chain",
+    "iot",
+    "dashboard",
+    "sensors"
+  ],
+  "author": "saive",
+  "license": "MIT"
+}

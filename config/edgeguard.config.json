@@ -1,0 +1,134 @@
+{
+  "project": {
+    "name": "EdgeGuard",
+    "tagline": "Intelligent Cold Chain Monitoring and Predictive Analytics for Vaccine/Food Transportation Using Fog Computing",
+    "githubRepo": "https://github.com/your-username/edgeguard-cold-chain-fog"
+  },
+  "network": {
+    "backendHost": "127.0.0.1",
+    "backendPort": 4200,
+    "fogHost": "127.0.0.1",
+    "fogPort": 4100,
+    "backendUrl": "http://127.0.0.1:4200",
+    "fogUrl": "http://127.0.0.1:4100"
+  },
+  "fog": {
+    "edgeNodeId": "fog-dublin-west-1",
+    "flushIntervalMs": 2500,
+    "batchSize": 6,
+    "windowSize": 5
+  },
+  "simulation": {
+    "startupDelayMs": 1200,
+    "dispatchJitterMs": 220,
+    "retainedEventsPerShipment": 120
+  },
+  "profiles": {
+    "vaccine": {
+      "temperatureC": {
+        "min": 2.0,
+        "max": 8.0
+      },
+      "humidityPct": {
+        "min": 35.0,
+        "max": 65.0
+      },
+      "vibrationMaxG": 2.4,
+      "maxSafeHours": 18,
+      "targetBandLabel": "2C to 8C",
+      "coldChainPriority": "critical"
+    },
+    "food": {
+      "temperatureC": {
+        "min": 0.0,
+        "max": 5.0
+      },
+      "humidityPct": {
+        "min": 50.0,
+        "max": 85.0
+      },
+      "vibrationMaxG": 3.2,
+      "maxSafeHours": 14,
+      "targetBandLabel": "0C to 5C",
+      "coldChainPriority": "high"
+    }
+  },
+  "fleet": [
+    {
+      "vehicleId": "VAX-101",
+      "label": "Children's Hospital Vaccine Run",
+      "cargoType": "vaccine",
+      "routeId": "DUB-HSP-01",
+      "origin": {
+        "name": "Tallaght Distribution Hub",
+        "latitude": 53.2877,
+        "longitude": -6.3737
+      },
+      "destination": {
+        "name": "Temple Street Hospital",
+        "latitude": 53.3573,
+        "longitude": -6.263
+      },
+      "routeMinutes": 58,
+      "dispatchEveryMs": 1000,
+      "scenario": "stable"
+    },
+    {
+      "vehicleId": "FRESH-204",
+      "label": "South Market Produce Route",
+      "cargoType": "food",
+      "routeId": "MUN-PRO-02",
+      "origin": {
+        "name": "Cork Agri Consolidation Point",
+        "latitude": 51.8985,
+        "longitude": -8.4756
+      },
+      "destination": {
+        "name": "Limerick Retail Market",
+        "latitude": 52.6638,
+        "longitude": -8.6267
+      },
+      "routeMinutes": 93,
+      "dispatchEveryMs": 1250,
+      "scenario": "watch"
+    },
+    {
+      "vehicleId": "SEA-309",
+      "label": "Atlantic Seafood Corridor",
+      "cargoType": "food",
+      "routeId": "GAL-SEA-03",
+      "origin": {
+        "name": "Galway Harbour Cold Store",
+        "latitude": 53.2707,
+        "longitude": -9.0568
+      },
+      "destination": {
+        "name": "Athlone Distribution Terminal",
+        "latitude": 53.4239,
+        "longitude": -7.9407
+      },
+      "routeMinutes": 88,
+      "dispatchEveryMs": 1100,
+      "scenario": "volatile"
+    },
+    {
+      "vehicleId": "DAIRY-412",
+      "label": "Midlands Dairy Express",
+      "cargoType": "food",
+      "routeId": "KIL-DAI-04",
+      "origin": {
+        "name": "Kilkenny Processing Centre",
+        "latitude": 52.6541,
+        "longitude": -7.2448
+      },
+      "destination": {
+        "name": "Dublin North Chilled Depot",
+        "latitude": 53.428,
+        "longitude": -6.2213
+      },
+      "routeMinutes": 104,
+      "dispatchEveryMs": 900,
+      "scenario": "critical"
+    }
+  ]
+}

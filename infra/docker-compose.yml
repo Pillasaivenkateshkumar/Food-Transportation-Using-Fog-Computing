@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/docker/backend.Dockerfile
+    ports:
+      - "4200:4200"
+  fog:
+    build:
+      context: ..
+      dockerfile: infra/docker/fog.Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "4100:4100"
+  sensors:
+    build:
+      context: ..
+      dockerfile: infra/docker/sensors.Dockerfile
+    depends_on:
+      - fog

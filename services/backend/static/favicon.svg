@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="EdgeGuard shield">
+  <defs>
+    <linearGradient id="shield" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#56e4d6" />
+      <stop offset="100%" stop-color="#8ec5ff" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#071725" />
+  <path d="M64 18 102 33v29c0 23-15 43-38 48C41 105 26 85 26 62V33z" fill="url(#shield)" opacity="0.95" />
+  <path d="M46 64h36" stroke="#071725" stroke-width="8" stroke-linecap="round" />
+  <path d="M46 48h24" stroke="#071725" stroke-width="8" stroke-linecap="round" />
+  <circle cx="78" cy="80" r="10" fill="#071725" />
+</svg>
