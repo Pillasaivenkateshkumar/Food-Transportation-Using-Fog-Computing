@@ -5,6 +5,7 @@ import { readJsonBody, sendJson, serveStaticFile } from "../shared/http.mjs";
 import { projectRoot } from "../shared/project-root.mjs";
 import { AsyncQueue } from "./queue.mjs";
 import { TelemetryRepository } from "./repository.mjs";
+import { uploadTelemetry } from "../shared/s3.js";
 
 const config = await loadConfig();
 const queue = new AsyncQueue();
@@ -146,6 +147,10 @@ const server = http.createServer(async (request, response) => {
   if (request.method === "POST" && url.pathname === "/api/ingest") {
     try {
       const batch = await readJsonBody(request);
+
+      const key = `telemetry/${Date.now()}.json`;
+      await uploadTelemetry(key, batch);
+
       if (!Array.isArray(batch.records) || !batch.records.length) {
         sendJson(response, 400, { error: "Ingestion payload must contain records[]" });
         return;
