@@ -25,5 +25,8 @@
     "sensors"
   ],
   "author": "saive",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1087.0"
+  }
 }
