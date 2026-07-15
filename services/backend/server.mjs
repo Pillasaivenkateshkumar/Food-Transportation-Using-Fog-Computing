@@ -6,6 +6,7 @@ import { projectRoot } from "../shared/project-root.mjs";
 import { AsyncQueue } from "./queue.mjs";
 import { TelemetryRepository } from "./repository.mjs";
 import { uploadTelemetry } from "../shared/s3.js";
+import { saveTelemetry } from "../shared/dynamodb.js";
 
 const config = await loadConfig();
 const queue = new AsyncQueue();
@@ -145,27 +146,75 @@ const server = http.createServer(async (request, response) => {
   }
 
   if (request.method === "POST" && url.pathname === "/api/ingest") {
-    try {
-      const batch = await readJsonBody(request);
+  try {
 
-      const key = `telemetry/${Date.now()}.json`;
-      await uploadTelemetry(key, batch);
+    const batch = await readJsonBody(request);
 
-      if (!Array.isArray(batch.records) || !batch.records.length) {
-        sendJson(response, 400, { error: "Ingestion payload must contain records[]" });
-        return;
-      }
-
-      queue.enqueue(batch);
-      sendJson(response, 202, {
-        accepted: true,
-        queueDepth: queue.depth
+    // Validate payload
+    if (!Array.isArray(batch.records) || !batch.records.length) {
+      sendJson(response, 400, {
+        error: "Ingestion payload must contain records[]"
       });
-    } catch (error) {
-      sendJson(response, 500, { error: error.message });
+      return;
     }
-    return;
+
+    // Upload complete batch to Amazon S3
+    const key = `telemetry/${Date.now()}.json`;
+    await uploadTelemetry(key, batch);
+
+    // Save every telemetry record into DynamoDB
+    for (const record of batch.records) {
+
+      await saveTelemetry({
+
+        vehicleId: record.vehicleId,
+
+        timestamp: record.timestamp,
+
+        cargoType: record.cargoType,
+
+        shipmentPriority: record.shipmentPriority,
+
+        temperature: record.sensors.temperatureC,
+
+        humidity: record.sensors.humidityPct,
+
+        vibration: record.sensors.vibrationG,
+
+        latitude: record.sensors.latitude,
+
+        longitude: record.sensors.longitude,
+
+        doorOpen: record.sensors.doorOpen,
+
+        riskScore: record.edgeAnalytics?.riskScore ?? 0,
+
+        status: record.edgeAnalytics?.status ?? "Normal"
+
+      });
+
+    }
+
+    // Continue existing application flow
+    queue.enqueue(batch);
+
+    sendJson(response, 202, {
+      accepted: true,
+      queueDepth: queue.depth
+    });
+
+  } catch (error) {
+
+    console.error("[Backend]", error);
+
+    sendJson(response, 500, {
+      error: error.message
+    });
+
   }
+
+  return;
+}
 
   const staticPath = resolveStaticPath(url.pathname);
   if (!staticPath) {
