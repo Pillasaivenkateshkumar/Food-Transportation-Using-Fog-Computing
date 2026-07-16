@@ -7,6 +7,7 @@ import { AsyncQueue } from "./queue.mjs";
 import { TelemetryRepository } from "./repository.mjs";
 import { uploadTelemetry } from "../shared/s3.js";
 import { saveTelemetry } from "../shared/dynamodb.js";
+import { publishMetric } from "../shared/cloudwatch.js";
 
 const config = await loadConfig();
 const queue = new AsyncQueue();
@@ -161,6 +162,12 @@ const server = http.createServer(async (request, response) => {
     // Upload complete batch to Amazon S3
     const key = `telemetry/${Date.now()}.json`;
     await uploadTelemetry(key, batch);
+    await publishMetric("TelemetryUploads", 1);
+
+    await publishMetric(
+      "TelemetryRecords",
+      batch.records.length
+    );
 
     // Save every telemetry record into DynamoDB
     for (const record of batch.records) {
@@ -192,6 +199,8 @@ const server = http.createServer(async (request, response) => {
         status: record.edgeAnalytics?.status ?? "Normal"
 
       });
+      
+      await publishMetric("DynamoDBWrites", 1); 
 
     }
 
@@ -206,6 +215,8 @@ const server = http.createServer(async (request, response) => {
   } catch (error) {
 
     console.error("[Backend]", error);
+
+    await publishMetric("Errors", 1);
 
     sendJson(response, 500, {
       error: error.message
