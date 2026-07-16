@@ -2,12 +2,12 @@
   "project": {
     "name": "EdgeGuard",
     "tagline": "Intelligent Cold Chain Monitoring and Predictive Analytics for Vaccine/Food Transportation Using Fog Computing",
-    "githubRepo": "https://github.com/your-username/edgeguard-cold-chain-fog"
+    "githubRepo": "https://github.com/Pillasaivenkateshkumar/Food-Transportation-Using-Fog-Computing.git"
   },
   "network": {
-    "backendHost": "127.0.0.1",
+    "backendHost": "0.0.0.0",
     "backendPort": 4200,
-    "fogHost": "127.0.0.1",
+    "fogHost": "0.0.0.0",
     "fogPort": 4100,
     "backendUrl": "http://127.0.0.1:4200",
     "fogUrl": "http://127.0.0.1:4100"
