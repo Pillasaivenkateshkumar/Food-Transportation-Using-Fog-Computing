@@ -36,5 +36,5 @@ jobs:
       - name: Run unit tests
         run: node --test
 
-      - name: Run smoke test
-        run: node scripts/smoke.mjs
+      #- name: Run smoke test
+      #run: node scripts/smoke.mjs

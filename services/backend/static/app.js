@@ -307,7 +307,7 @@ function renderTimeline(timeline) {
 function renderDashboard(payload) {
   latestDashboard = payload;
   elements.subtitle.textContent = payload.project.tagline;
-  elements.repoLink.href = payload.githubRepo;
+  elements.repoLink.href = "none";
   elements.lastUpdated.textContent = `Updated ${new Date(payload.generatedAt).toLocaleTimeString("en-IE")}`;
 
   const hiddenCount = payload.fleetManagement?.hiddenCount ?? 0;
