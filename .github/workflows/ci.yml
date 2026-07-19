@@ -11,6 +11,7 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,6 +20,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start backend
+        run: |
+          npm run backend &
+          sleep 10
+
+      - name: Verify backend
+        run: curl http://127.0.0.1:4200/health
 
       - name: Run unit tests
         run: node --test
