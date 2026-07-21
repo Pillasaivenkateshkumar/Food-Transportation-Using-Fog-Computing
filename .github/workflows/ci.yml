@@ -1,19 +1,24 @@
-name: EdgeGuard CI
+name: EdgeGuard CI/CD
 
 on:
   push:
     branches:
       - main
       - master
-      - "codex/**"
+
   pull_request:
 
 jobs:
+
   validate:
+
+    name: Continuous Integration
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -22,19 +27,57 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Start backend
+      - name: Start Backend
         run: |
           npm run backend &
           sleep 10
 
-      - name: Verify backend
+      - name: Health Check
         run: curl http://127.0.0.1:4200/health
 
-      - name: Run unit tests
+      - name: Run Unit Tests
         run: node --test
 
-      #- name: Run smoke test
-      #run: node scripts/smoke.mjs
+  deploy:
+
+    name: Continuous Deployment
+
+    needs: validate
+
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy to EC2
+
+        uses: appleboy/ssh-action@v1.2.0
+
+        with:
+
+          host: ${{ secrets.EC2_HOST }}
+
+          username: ${{ secrets.EC2_USER }}
+
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+
+          script: |
+
+            cd ~/Food-Transportation-Using-Fog-Computing
+
+            echo "Pull latest source..."
+            git pull origin main
+
+            echo "Install dependencies..."
+            npm install
+
+            echo "Restart PM2..."
+            pm2 restart edgeguard-backend
+            pm2 restart edgeguard-fog
+            pm2 restart edgeguard-sensors
+
+            echo "Deployment Successful!"
