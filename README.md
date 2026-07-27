@@ -2,7 +2,6 @@
 
 > **Intelligent Cold Chain Monitoring and Predictive Analytics for Vaccine/Food Transportation Using Fog Computing**
 
-EdgeGuard is a fog-computing cold-chain monitoring platform for vaccine and food transportation. It simulates multi-sensor telemetry, processes it at a virtual fog node, forwards enriched batches to a scalable backend, stores cloud telemetry in AWS services, and presents the results in a real-time operations dashboard.
 
 GitHub repository:
 [https://github.com/Pillasaivenkateshkumar/Food-Transportation-Using-Fog-Computing.git](https://github.com/Pillasaivenkateshkumar/Food-Transportation-Using-Fog-Computing.git)
@@ -256,6 +255,11 @@ After successful validation, GitHub Actions automatically:
 - Restarts PM2 managed services
 
 This ensures every push to the **main** branch is automatically deployed to the production environment.
+
+### CONCLUSION 
+
+EdgeGuard is a fog-computing cold-chain monitoring platform for vaccine and food transportation. It simulates multi-sensor telemetry, processes it at a virtual fog node, forwards enriched batches to a scalable backend, stores cloud telemetry in AWS services, and presents the results in a real-time operations dashboard.
+
 
 ## Author
 
