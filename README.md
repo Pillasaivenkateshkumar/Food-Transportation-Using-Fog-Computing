@@ -25,7 +25,6 @@ GitHub repository link for the report:
 `-- readme.txt
 ```
 
-
 ## Key Features
 
 - Five sensor types: temperature, humidity, GPS, vibration, and door-state monitoring.
@@ -34,10 +33,3 @@ GitHub repository link for the report:
 - Backend queue processing with responsive operations dashboards and server-sent events.
 - Public-cloud-ready delivery assets for Docker, GitHub Actions, and Azure Container Apps.
 
-## Deliverables Included
-
-- `readme.txt`: submission-ready installation instructions.
-- `docs/architecture.md`: architecture, design choices, and rubric mapping.
-- `docs/deployment.md`: public cloud deployment strategy.
-- `docs/report-outline.md`: IEEE-style report planning notes.
-- `docs/demo-script.md`: a tight 4-minute presentation and demo flow.
